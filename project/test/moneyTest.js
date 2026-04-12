@@ -1,5 +1,9 @@
 import {formatCurrency} from '../scripts/utils/money.js';
 
+console.log('test suite: formatCurrency')
+
+console.log('converts cents into dollars')
+
 //basic test cases (tes normal)
 if (formatCurrency(1899) === '18.99') {
     console.log('passed')
@@ -7,12 +11,16 @@ if (formatCurrency(1899) === '18.99') {
     console.log('failed');
 }
 
+console.log('works with zero')
+
 //edge cases (tes kelebihan)
 if (formatCurrency(0) === '0.00') {
     console.log('passed')
 } else {
     console.log('failed');
 }
+
+console.log('rounds up to the nearest cent')
 
 if (formatCurrency(2000.5) === '20.01') {
     console.log('passed')
