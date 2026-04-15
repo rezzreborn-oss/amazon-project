@@ -33,3 +33,17 @@ if (formatCurrency(2000.4) === '20.00') {
 } else {
     console.log('failed');
 }
+
+console.log('omaga123GG')
+if (formatCurrency(2999) === '29.99') {
+    console.log('passed')
+} else {
+    console.log('failed')
+}
+
+console.log('negative')
+if (formatCurrency(-2999) === '-29.99') {
+    console.log('passed')
+} else {
+    console.log('failed')
+}
