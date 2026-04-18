@@ -1,5 +1,5 @@
 import { renderOrderSummary } from '../../scripts/checkout/orderSummary.js';
-import { loadFromStorage,cart } from '../../data/cart.js';
+import { cart } from '../../data/cart-class.js';
 
 describe('test suite: renderOrderSummary', () => {
 
@@ -14,31 +14,27 @@ describe('test suite: renderOrderSummary', () => {
             <div class="js-return-to-home-link"></div>
             <div class="js-payment-summary"></div>
             <div class="js-checkout-header"></div>
-            `;
-            
-            spyOn(localStorage, 'getItem').and.callFake(() => {
-            return JSON.stringify([
-                {
-                    productId: productId1,
-                    quantity: 2,
-                    deliveryOptionId: '1'
-                },
-                {
-                    productId: productId2,
-                    quantity: 1,
-                    deliveryOptionId: '2'
-                }
-            ]);
-        });
-        loadFromStorage();
+        `;
 
-        renderOrderSummary()
-    })
+        cart.cartItems = [
+            {
+                productId: productId1,
+                quantity: 2,
+                deliveryOptionId: '1'
+            },
+            {
+                productId: productId2,
+                quantity: 1,
+                deliveryOptionId: '2'
+            }
+        ];
+
+        renderOrderSummary();
+    });
 
     afterEach(() => {
-        document.querySelector('.js-test-container').innerHTML = ``;
-    })
-
+        document.querySelector('.js-test-container').innerHTML = '';
+    });
 
     it('displays the cart', () => {
         expect(
@@ -55,35 +51,32 @@ describe('test suite: renderOrderSummary', () => {
 
     it('display name of product', () => {
         const productNameElement = document.querySelector(`.js-product-name-${productId1}`);
-
         expect(productNameElement).not.toEqual(null);
         expect(productNameElement.innerText).toContain('Black and Gray Athletic Cotton Socks');
-    })
+    });
 
     it('display price of product', () => {
         const productPriceElement = document.querySelector(`.js-product-price-${productId1}`);
-
         expect(productPriceElement).not.toBeNull();
         expect(productPriceElement.innerText).toContain('$');
-    })
+    });
+
     it('updates the delivery option', () => {
         document.querySelector(`.js-delivery-option-${productId1}-3`).click();
     
         expect(
-          document.querySelector(`.js-delivery-option-input-${productId1}-3`).checked
+            document.querySelector(`.js-delivery-option-input-${productId1}-3`).checked
         ).toEqual(true);
     
-        expect(cart.length).toEqual(2);
-        expect(cart[0].productId).toEqual(productId1);
-        expect(cart[0].deliveryOptionId).toEqual('3');
+        expect(cart.cartItems.length).toEqual(2);
+        expect(cart.cartItems[0].productId).toEqual(productId1);
+        expect(cart.cartItems[0].deliveryOptionId).toEqual('3');
 
         expect(
             document.querySelector('.js-payment-summary-shipping').innerText
-            ).toEqual('$14.98');
+        ).toEqual('$14.98');
         expect(
             document.querySelector('.js-payment-summary-total').innerText
-            ).toEqual('$63.50')
-    })
-})
-
-
+        ).toEqual('$63.50');
+    });
+});

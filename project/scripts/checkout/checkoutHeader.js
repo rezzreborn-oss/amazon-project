@@ -1,7 +1,7 @@
-import {calculateCartQuantity} from '../../data/cart.js';
+import {cart} from '../../data/cart-class.js';
 
 export function renderCheckoutHeader() {
-  const cartQuantity = calculateCartQuantity();
+  const cartQuantity = cart.calculateCartQuantity();
   const checkoutHeaderHTML = `
       <div class="header-content">
         <div class="checkout-header-left-section">
@@ -17,7 +17,6 @@ export function renderCheckoutHeader() {
           <img src="images/icons/checkout-lock-icon.png">
         </div>
       </div>
-`;
-  document.querySelector('.js-checkout-header')
-    .innerHTML = checkoutHeaderHTML;
+  `;
+  document.querySelector('.js-checkout-header').innerHTML = checkoutHeaderHTML;
 }

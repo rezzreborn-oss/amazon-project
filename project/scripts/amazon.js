@@ -1,4 +1,4 @@
-import {cart, addToCart, calculateCartQuantity} from '../data/cart.js';
+import {cart, addToCart, calculateCartQuantity} from '../data/cart-class.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 
@@ -8,26 +8,20 @@ products.forEach((product) => {
   productsHTML += `
         <div class="product-container">
           <div class="product-image-container">
-            <img class="product-image"
-              src="${product.image}">
+            <img class="product-image" src="${product.image}">
           </div>
-
           <div class="product-name limit-text-to-2-lines">
             ${product.name}
           </div>
-
           <div class="product-rating-container">
-            <img class="product-rating-stars"
-              src="${product.getStarsUrl()}">
+            <img class="product-rating-stars" src="${product.getStarsUrl()}">
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
           </div>
-
           <div class="product-price">
             ${product.getPrice()}
           </div>
-
           <div class="product-quantity-container">
             <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
@@ -42,16 +36,12 @@ products.forEach((product) => {
               <option value="10">10</option>
             </select>
           </div>
-  
           ${product.extraInfoHTML()}
-
           <div class="product-spacer"></div>
-
           <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
-
           <button class="add-to-cart-button button-primary js-add-to-cart"
             data-product-id="${product.id}">
             Add to Cart
@@ -65,37 +55,30 @@ document.querySelector('.js-product-grid').innerHTML = productsHTML;
 const addedMessageTimeouts = {};
 
 function updateCartQuantity() {
-  const cartQuantity = calculateCartQuantity();
+  const cartQuantity = cart.calculateCartQuantity();
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 }
 
 function productMessage(productId) {
   const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
   addedMessage.classList.add('added-to-cart-visible');
-
   const previousTimeoutId = addedMessageTimeouts[productId];
   if (previousTimeoutId) {
     clearTimeout(previousTimeoutId);
   }
-
   const timeoutId = setTimeout(() => {
     addedMessage.classList.remove('added-to-cart-visible');
   }, 1000);
-
   addedMessageTimeouts[productId] = timeoutId;
 }
 
 updateCartQuantity();
 
-function setupAddToCart() {
-  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-    button.addEventListener('click', () => {
-      const { productId } = button.dataset;
-      addToCart(productId);
-      updateCartQuantity();
-      productMessage(productId);
-    });
+document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  button.addEventListener('click', () => {
+    const { productId } = button.dataset;
+    cart.addToCart(productId);
+    updateCartQuantity();
+    productMessage(productId);
   });
-}
-
-setupAddToCart();
+});
