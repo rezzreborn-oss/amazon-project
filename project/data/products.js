@@ -1,13 +1,13 @@
-import {formatCurrency} from '../scripts/utils/money.js';
+import { formatCurrency } from "../scripts/utils/money.js";
 
-export function getProduct(productId){
+export function getProduct(productId) {
   let matchingProduct;
-  
-      products.forEach((product) => {
-        if (product.id === productId) {
-          matchingProduct = product;
-        }
-      });
+
+  products.forEach((product) => {
+    if (product.id === productId) {
+      matchingProduct = product;
+    }
+  });
   return matchingProduct;
 }
 
@@ -27,15 +27,15 @@ export class Product {
   }
 
   getStarsUrl() {
-    return `images/ratings/rating-${this.rating.stars * 10}.png`
+    return `images/ratings/rating-${this.rating.stars * 10}.png`;
   }
 
   getPrice() {
-    return `$${formatCurrency(this.priceCents)}`
+    return `$${formatCurrency(this.priceCents)}`;
   }
 
   extraInfoHTML() {
-    return '';
+    return "";
   }
 }
 
@@ -62,7 +62,7 @@ export class Appliance extends Product {
   warrantyLink;
 
   constructor(productDetails) {
-    super(productDetails)
+    super(productDetails);
 
     this.instructionsLink = productDetails.instructionsLink;
     this.warrantyLink = productDetails.warrantyLink;
@@ -106,28 +106,26 @@ const object3 = {
 }
 object3.method();
 */
- 
+
 export let products = [];
 
-
 export function loadProductsFetch() {
-  const promise = fetch(
-    'https://supersimplebackend.dev/products'
-  ).then((response) => {
-    return response.json()
-  }).then((productsData) => {
-    products = productsData.map((productDetails) => {
-      if (productDetails.type === 'clothing') {
-        return new Clothing(productDetails);
-        
-      } else if (productDetails.type === 'appliance') {
-        return new Appliance(productDetails);
-      }
-      return new Product(productDetails);
-    });
+  const promise = fetch("https://supersimplebackend.dev/products")
+    .then((response) => {
+      return response.json();
+    })
+    .then((productsData) => {
+      products = productsData.map((productDetails) => {
+        if (productDetails.type === "clothing") {
+          return new Clothing(productDetails);
+        } else if (productDetails.type === "appliance") {
+          return new Appliance(productDetails);
+        }
+        return new Product(productDetails);
+      });
 
-    console.log('load products')
-  })/*.catch((error) => {
+      console.log("load products");
+    }); /*.catch((error) => {
     console.log('unexpected error. please try again later.')
   })
     */

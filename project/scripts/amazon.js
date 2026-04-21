@@ -1,6 +1,7 @@
-import {cart} from '../data/cart-class.js';
-import {products, loadProductsFetch} from '../data/products.js';
-import {formatCurrency} from './utils/money.js';
+import { cart } from "../data/cart-class.js";
+import { products, loadProductsFetch } from "../data/products.js";
+import { formatCurrency } from "./utils/money.js";
+
 
 async function main() {
   await loadProductsFetch();
@@ -10,8 +11,7 @@ async function main() {
 main();
 
 function renderProductsGrid() {
-
-  let productsHTML = '';
+  let productsHTML = "";
 
   products.forEach((product) => {
     productsHTML += `
@@ -59,32 +59,34 @@ function renderProductsGrid() {
     `;
   });
 
-  document.querySelector('.js-product-grid').innerHTML = productsHTML;
+  document.querySelector(".js-product-grid").innerHTML = productsHTML;
 
   const addedMessageTimeouts = {};
 
   function updateCartQuantity() {
     const cartQuantity = cart.calculateCartQuantity();
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
   }
 
   function productMessage(productId) {
-    const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
-    addedMessage.classList.add('added-to-cart-visible');
+    const addedMessage = document.querySelector(
+      `.js-added-to-cart-${productId}`,
+    );
+    addedMessage.classList.add("added-to-cart-visible");
     const previousTimeoutId = addedMessageTimeouts[productId];
     if (previousTimeoutId) {
       clearTimeout(previousTimeoutId);
     }
     const timeoutId = setTimeout(() => {
-      addedMessage.classList.remove('added-to-cart-visible');
+      addedMessage.classList.remove("added-to-cart-visible");
     }, 1000);
     addedMessageTimeouts[productId] = timeoutId;
   }
 
   updateCartQuantity();
 
-  document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-    button.addEventListener('click', () => {
+  document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+    button.addEventListener("click", () => {
       const { productId } = button.dataset;
       cart.addToCart(productId);
       updateCartQuantity();
