@@ -40,7 +40,7 @@ export function addToCart(productId) {
     `.js-quantity-selector-${productId}`
   );
 
-  const quantity = quantitySelector ? Number(quantitySelector.value) : 1;
+  const quantity = Number(quantitySelector.value);
 
   if (matchingItem) {
     matchingItem.quantity += quantity;

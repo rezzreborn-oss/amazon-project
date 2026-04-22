@@ -91,3 +91,6 @@ describe("test suite: renderOrderSummary", () => {
     ).toEqual("$63.50");
   });
 });
+
+
+
