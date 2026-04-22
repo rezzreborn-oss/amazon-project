@@ -119,6 +119,10 @@ export async function loadCartFetch() {
   console.log(response);
   return load;
 }
+export function resetCart() {
+  cart = [];
+  saveToStorage();
+}
 /*
 export function loadCart(fun) {
   const xhr = new XMLHttpRequest();

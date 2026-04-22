@@ -2,7 +2,6 @@ import { cart } from "../data/cart-class.js";
 import { products, loadProductsFetch } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
-
 async function main() {
   await loadProductsFetch();
   renderProductsGrid();
@@ -13,7 +12,28 @@ main();
 function renderProductsGrid() {
   let productsHTML = "";
 
-  products.forEach((product) => {
+  const url = new URL(window.location.href);
+  const search = url.searchParams.get("search");
+
+  let filteredProducts = products;
+
+  if (search) {
+    filteredProducts = products.filter((product) => {
+      let matchingKeyword = false;
+
+      product.keywords.forEach((keyword) => {
+        if (keyword.toLowerCase().includes(search.toLowerCase())) {
+          matchingKeyword = true;
+        }
+      });
+
+      return (
+        matchingKeyword ||
+        product.name.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+  }
+  filteredProducts.forEach((product) => {
     productsHTML += `
           <div class="product-container">
             <div class="product-image-container">
@@ -58,7 +78,6 @@ function renderProductsGrid() {
           </div>
     `;
   });
-
   document.querySelector(".js-product-grid").innerHTML = productsHTML;
 
   const addedMessageTimeouts = {};
@@ -93,4 +112,17 @@ function renderProductsGrid() {
       productMessage(productId);
     });
   });
+
+  document.querySelector(".js-search-button").addEventListener("click", () => {
+    const search = document.querySelector(".js-search-bar").value;
+    window.location.href = `amazon.html?search=${search}`;
+  });
+
+  document.querySelector('.js-search-bar')
+  .addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      const searchTerm = document.querySelector('.js-select-bar').value;
+      window.location.href = `amazon.html?search=${searchTerm}`;
+    }
+  })
 }
