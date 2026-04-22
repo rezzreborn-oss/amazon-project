@@ -40,7 +40,10 @@ export function addToCart(productId) {
     `.js-quantity-selector-${productId}`
   );
 
-  const quantity = Number(quantitySelector.value);
+  // ✅ FIX: kalau selector tidak ada → default 1
+  const quantity = quantitySelector
+    ? Number(quantitySelector.value)
+    : 1;
 
   if (matchingItem) {
     matchingItem.quantity += quantity;
